@@ -5,13 +5,12 @@ const App = () => {
   const [passWoord, setPassWoord] = useState("");
   const [base, setBase] = useState("");
   const [site, setSite] = useState("");
+  const [special, setSpecial] = useState("");
 
   const generatePass = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    console.log("first");
-    setPassWoord(generator.type1({ base, site }));
-    console.log("second");
+    setPassWoord(generator.type2({ base, site, special }));
   };
   return (
     <div className="flex justify-center items-center  h-screen w-screen bg-slate-700 ">
@@ -22,7 +21,12 @@ const App = () => {
         {passWoord && <p>{passWoord}</p>}
         <form onSubmit={(e) => generatePass(e)} className="space-y-3">
           <div className="flex flex-col">
-            <label htmlFor="base">Base</label>
+            <label
+              htmlFor="base"
+              className="after:content-['*'] after:text-red-600 "
+            >
+              Base
+            </label>
             <input
               onChange={(baseText) => setBase(baseText.target.value)}
               type="text"
@@ -32,12 +36,27 @@ const App = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="site">Site</label>
+            <label
+              htmlFor="site"
+              className="after:content-['*'] after:text-red-600 "
+            >
+              Site
+            </label>
             <input
               onChange={(site) => setSite(site.target.value)}
               type="text"
               id="site"
               placeholder="site"
+              className="border-collapse border outline-none"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="special">Special</label>
+            <input
+              onChange={(special) => setSpecial(special.target.value)}
+              type="text"
+              id="special"
+              placeholder="special"
               className="border-collapse border outline-none"
             />
           </div>
