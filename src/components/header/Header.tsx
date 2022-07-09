@@ -8,7 +8,7 @@ const Header = () => {
     <header className="py-2 bg-violet-500">
       <nav className="flex items-center justify-between w-full px-4 text-white">
         <Link to="/">
-          <h1 className="text-xl font-bold ">Pass Generator updated</h1>
+          <h1 className="text-xl font-bold ">Pass Generator </h1>
         </Link>
         <ul className="flex space-x-4  ">
           <Link to="/">
