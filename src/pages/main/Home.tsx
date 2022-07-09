@@ -13,8 +13,8 @@ const Home = () => {
     setPassWoord(generator.type2({ base, site, special }));
   };
   return (
-    <div className="flex justify-center items-center  h-screen w-screen bg-slate-700 ">
-      <div className="shadow-md  w-3/4 px-5 py-3 rounded-md bg-slate-50">
+    <div className="flex justify-center items-center  h-screen w-full  bg-slate-700 ">
+      <div className="shadow-md  w-3/4 max-w-2xl px-5 py-3 rounded-md bg-slate-50">
         <h1 className="text-center text-lg font-semibold">
           Password Generator
         </h1>
