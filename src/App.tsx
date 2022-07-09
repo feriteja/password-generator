@@ -1,5 +1,5 @@
-import React, { SyntheticEvent, useState } from "react";
-import { alphabetPosition, generator } from "./logic/generator";
+import { SyntheticEvent, useState } from "react";
+import { generator } from "./logic/pass-generator";
 
 const App = () => {
   const [passWoord, setPassWoord] = useState("");
