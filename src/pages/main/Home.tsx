@@ -32,7 +32,7 @@ const Home = () => {
               type="text"
               id="base"
               placeholder="base pass"
-              className="border-collapse border  outline-none"
+              className="border-collapse border rounded-md p-2 outline-none"
             />
           </div>
           <div className="flex flex-col">
@@ -47,7 +47,7 @@ const Home = () => {
               type="text"
               id="site"
               placeholder="site"
-              className="border-collapse border outline-none"
+              className="border-collapse border rounded-md p-2 outline-none"
             />
           </div>
           <div className="flex flex-col">
@@ -57,14 +57,14 @@ const Home = () => {
               type="text"
               id="special"
               placeholder="special"
-              className="border-collapse border outline-none"
+              className="border-collapse border rounded-md p-2 outline-none"
             />
           </div>
           <div>
             <input
               type="submit"
               value="Generate"
-              className=" relative w-full bg-indigo-400 hover:bg-indigo-400/90 rounded-md text-white font-bold py-1  border-b-4 active:border-b-0 border-r-2 active:border-0 border-black/30 -translate-y-1 active:translate-y-0 duration-150 "
+              className="  w-full bg-indigo-400 hover:bg-indigo-400/90 rounded-md text-white font-bold py-1  border-b-4 active:border-b-0 border-r-2 active:border-0 border-black/30 -translate-y-1 active:translate-y-0 duration-150 "
             />
           </div>
         </form>
