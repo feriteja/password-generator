@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signInUser } from "../../firebase/auth";
 import InputField from "./components/InputField";
 
@@ -7,13 +7,17 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
   const signIn = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     try {
       await signInUser({ email, password });
+      navigate("/");
     } catch (error: any) {
       setError(error);
+      console.log(error);
     }
   };
   return (
