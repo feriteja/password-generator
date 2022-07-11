@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 interface props {
@@ -10,12 +10,13 @@ interface props {
 
 const InputField: React.FC<props> = (props) => {
   const [showPass, setShowPass] = useState(false);
+  const inputID = useId();
   return (
     <div className="flex flex-col w-full ">
-      <label htmlFor="password">{props.title}</label>
+      <label htmlFor={`${inputID}-label`}>{props.title}</label>
       <div className="flex items-center bg-white p-2 border rounded-md">
         <input
-          id="password"
+          id={`${inputID}-input`}
           onChange={(e) => props.onChange(e.target.value)}
           type={!showPass && props.type === "password" ? "password" : "text"}
           placeholder={props.placeHolder || ""}

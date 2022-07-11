@@ -1,38 +1,44 @@
 import React, { SyntheticEvent, useState } from "react";
 import { Link } from "react-router-dom";
+import { signInUser } from "../../firebase/auth";
+import InputField from "./components/InputField";
 
 const SignIn = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const signIn = (e: SyntheticEvent) => {
+  const signIn = async (e: SyntheticEvent) => {
     e.preventDefault();
+
+    try {
+      await signInUser({ email, password });
+    } catch (error: any) {
+      setError(error);
+    }
   };
   return (
     <div className="flex flex-col justify-center items-center bg-slate-700 h-screen">
       <div className="w-3/4 max-w-3xl bg-slate-50  py-5 px-4 rounded-md shadow-md">
         <h1 className="text-xl font-semibold">Login</h1>
+        {error && (
+          <p className="text-center text-red-500 font-semibold tex-base ">
+            {error}
+          </p>
+        )}
         <form onSubmit={signIn} className="flex flex-col mt-5 space-y-3">
-          <div className="flex flex-col w-full">
-            <label htmlFor="username">Username:</label>
-            <input
-              id="username"
-              type="text"
-              placeholder="username"
-              onChange={(e) => setUsername(e.target.value)}
-              className="border rounded-md  p-2  "
-            />
-          </div>
-          <div className="flex flex-col w-full">
-            <label htmlFor="password">Password:</label>
-            <input
-              id="password"
-              type="text"
-              placeholder="password"
-              onChange={(e) => setPassword(e.target.value)}
-              className="border rounded-md  p-2  "
-            />
-          </div>
+          <InputField
+            placeHolder="your@mail.com"
+            type="text"
+            title="Email"
+            onChange={(e) => setEmail(e)}
+          />
+          <InputField
+            placeHolder="password"
+            type="password"
+            title="Password"
+            onChange={(e) => setPassword(e)}
+          />
+
           <input
             type="submit"
             value={"login"}

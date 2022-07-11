@@ -1,9 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserState } from "../../context/UserStateContext";
+import { signOutUser } from "../../firebase/auth";
 
 const Header = () => {
   const { user } = UserState();
+  const navigate = useNavigate();
+
+  const onSignOut = async () => {
+    try {
+      await signOutUser();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <header className="py-2 bg-violet-500">
       <nav className="flex items-center justify-between w-full px-4 text-white">
@@ -15,9 +26,15 @@ const Header = () => {
             <li>Home</li>
           </Link>
           {user ? (
-            <Link to="/profile">
-              <li>Profile</li>
-            </Link>
+            <>
+              <Link to="/profile">
+                <li>Profile</li>
+              </Link>
+
+              <button onClick={onSignOut}>
+                <li>Logout</li>
+              </button>
+            </>
           ) : (
             <>
               <Link to="/signIn">

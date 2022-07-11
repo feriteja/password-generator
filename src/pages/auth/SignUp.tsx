@@ -1,6 +1,6 @@
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useId, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signUp } from "../../firebase/auth";
+import { signUpUser } from "../../firebase/auth";
 import InputField from "./components/InputField";
 
 const SignUp = () => {
@@ -8,6 +8,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confPass, setConfPass] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const onsignUp = async (e: SyntheticEvent) => {
@@ -17,8 +18,8 @@ const SignUp = () => {
     console.log("first");
 
     try {
-      await signUp({ email, password });
-      navigate("/home");
+      await signUpUser({ email, password });
+      navigate("/");
     } catch (error: any) {
       setError(error);
     }

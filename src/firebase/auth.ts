@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { auth, googleProvider } from "../firebase.config";
 
@@ -12,7 +13,7 @@ interface userInput {
   password: string;
 }
 
-const signUp = async ({ email, password }: userInput) => {
+const signUpUser = async ({ email, password }: userInput) => {
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -25,7 +26,7 @@ const signUp = async ({ email, password }: userInput) => {
   }
 };
 
-const signIn = async ({ email, password }: userInput) => {
+const signInUser = async ({ email, password }: userInput) => {
   try {
     const user = await signInWithEmailAndPassword(auth, email, password);
 
@@ -53,4 +54,8 @@ const signByGoogle = async () => {
   }
 };
 
-export { signUp, signIn, signByGoogle };
+const signOutUser = async () => {
+  await signOut(auth);
+};
+
+export { signUpUser, signInUser, signOutUser, signByGoogle };
