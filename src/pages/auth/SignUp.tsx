@@ -1,50 +1,57 @@
-import React, { SyntheticEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { SyntheticEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { signUp } from "../../firebase/auth";
+import InputField from "./components/InputField";
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPass, setConfPass] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const signup = (e: SyntheticEvent) => {
+  const onsignUp = async (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log("asdsa");
+    if (password !== confPass) return setError("Password doesn't match");
+    console.log("first");
+
+    try {
+      await signUp({ email, password });
+      navigate("/home");
+    } catch (error: any) {
+      setError(error);
+    }
   };
+
   return (
     <div className="flex flex-col justify-center items-center bg-slate-700 h-screen">
       <div className="w-3/4 max-w-3xl bg-slate-50  py-5 px-4 rounded-md shadow-md">
         <h1 className="text-xl font-semibold">Register</h1>
-        <form onSubmit={signup} className="flex flex-col mt-5 space-y-3">
-          <div className="flex flex-col w-full">
-            <label htmlFor="username">Username:</label>
-            <input
-              id="username"
-              onChange={(e) => setUsername(e.target.value)}
-              type="text"
-              placeholder="username"
-              className="border rounded-md  p-2  "
-            />
-          </div>
-          <div className="flex flex-col w-full">
-            <label htmlFor="password">Password:</label>
-            <input
-              id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              type="text"
-              placeholder="password"
-              className="border rounded-md  p-2  "
-            />
-          </div>
-          <div className="flex flex-col w-full">
-            <label htmlFor="confPassword">Confirm Password:</label>
-            <input
-              id="confPassword"
-              onChange={(e) => setPassword(e.target.value)}
-              type="text"
-              placeholder="password"
-              className="border rounded-md  p-2  "
-            />
-          </div>
+        {error && (
+          <p className="text-center text-red-500 font-semibold tex-base ">
+            {error}
+          </p>
+        )}
+        <form onSubmit={onsignUp} className="flex flex-col mt-5 space-y-3">
+          <InputField
+            title="Email"
+            onChange={(e) => setEmail(e)}
+            type="text"
+            placeHolder="your@mail.com"
+          />
+          <InputField
+            title="Password"
+            onChange={(e) => setPassword(e)}
+            type="password"
+            placeHolder="password"
+          />
+          <InputField
+            title="Confirm Password"
+            onChange={(e) => setConfPass(e)}
+            type="password"
+            placeHolder="confirm password"
+          />
           <input
             type="submit"
             value={"login"}

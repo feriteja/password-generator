@@ -10,8 +10,8 @@ import { auth, googleProvider } from "../firebase.config";
 interface userInput {
   email: string;
   password: string;
-  confirmPassword: string;
 }
+
 const signUp = async ({ email, password }: userInput) => {
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
