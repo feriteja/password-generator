@@ -56,10 +56,10 @@ const passGenerateType2 = (pass: inputPass) => {
     newPass.splice(position, 0, val);
   });
 
-  special.forEach((val, idx) => {
+  special.slice(0, 10).forEach((val, idx) => {
     const position = special2[idx] % newPass.length;
     newPass.splice(position, 0, val);
   });
 
-  return newPass.join("");
+  return { pass: newPass.join(""), site: pass.site };
 };

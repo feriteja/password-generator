@@ -1,24 +1,64 @@
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useRef, useState } from "react";
+import ModalProgress from "../../components/modal/ModalProgress";
+import {
+  UserState,
+  userStateContextProps,
+} from "../../context/UserStateContext";
+import { savePassword } from "../../firebase/firestore";
 import { generator } from "../../logic/pass-generator";
 
 const Home = () => {
-  const [passWoord, setPassWoord] = useState("");
+  const [passWoord, setPassWoord] = useState<{
+    pass: string;
+    site: string;
+  }>();
+  const { user } = UserState() as userStateContextProps;
   const [base, setBase] = useState("");
   const [site, setSite] = useState("");
   const [special, setSpecial] = useState("");
+  const [showLoading, setShowLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const generatePass = (e: SyntheticEvent) => {
     e.preventDefault();
 
     setPassWoord(generator.type2({ base, site, special }));
   };
+
+  const onSavePassword = async () => {
+    if (!user) return alert("Please login");
+    if (!passWoord?.pass && !passWoord?.site) return;
+    setShowLoading(true);
+    try {
+      await savePassword({
+        password: passWoord?.pass,
+        site: passWoord?.site,
+        user: user,
+      });
+      setPassWoord(undefined);
+      setMessage(`Password ${passWoord.site} is saved`);
+      setBase("");
+      setSite("");
+      setSpecial("");
+      setShowLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setShowLoading(false);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center  h-screen w-full  bg-slate-700 ">
+      {showLoading && <ModalProgress />}
+
       <div className="shadow-md  w-3/4 max-w-2xl px-5 py-3 rounded-md bg-slate-50">
         <h1 className="text-center text-lg font-semibold">
           Password Generator
         </h1>
-        {passWoord && <p>{passWoord}</p>}
+        {message && (
+          <p className="text-green-400 text-center font-semibold">{message}</p>
+        )}
         <form onSubmit={(e) => generatePass(e)} className="space-y-3">
           <div className="flex flex-col">
             <label
@@ -64,10 +104,24 @@ const Home = () => {
             <input
               type="submit"
               value="Generate"
-              className="  w-full bg-indigo-400 hover:bg-indigo-400/90 rounded-md text-white font-bold py-1  border-b-4 active:border-b-0 border-r-2 active:border-0 border-black/30 -translate-y-1 active:translate-y-0 duration-150 "
+              className=" relative  w-full bg-indigo-400 hover:bg-indigo-400/90 rounded-md text-white font-bold py-1  border-b-4 active:border-b-0 border-r-2 active:border-0 border-black/30 -translate-y-1 active:translate-y-0 duration-150 "
             />
           </div>
         </form>
+        {passWoord?.pass && (
+          <div>
+            <h2 className="font-semibold">your {passWoord?.site} pass:</h2>
+            <div className="flex justify-between mt-2">
+              <p>{passWoord?.pass}</p>
+              <button
+                className="bg-indigo-400 rounded-sm text-white px-2 py-1"
+                onClick={onSavePassword}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

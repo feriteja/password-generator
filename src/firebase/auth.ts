@@ -6,7 +6,8 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { auth, googleProvider } from "../firebase.config";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db, googleProvider } from "../firebase.config";
 
 interface userInput {
   email: string;
