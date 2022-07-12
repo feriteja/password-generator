@@ -4,6 +4,7 @@ import { User } from "firebase/auth";
 import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore";
 import { PasswordDataInt } from "../constant/type/structureData";
 import { db } from "../firebase.config";
+import { ChipperPass } from "../func/encryptPass";
 
 interface SavePasswordProps {
   password: string;
@@ -52,7 +53,10 @@ const savePassword = async (props: SavePasswordProps) => {
     );
 
     await setDoc(userAppPath, {
-      userPassword: arrayUnion({ site: props.site, password: chiperPass }),
+      userPassword: arrayUnion({
+        site: props.site,
+        password: ChipperPass(props.password),
+      }),
     });
   } catch (error) {
     if (error instanceof FirebaseError) {

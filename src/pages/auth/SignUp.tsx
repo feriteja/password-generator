@@ -13,9 +13,8 @@ const SignUp = () => {
 
   const onsignUp = async (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log("asdsa");
+
     if (password !== confPass) return setError("Password doesn't match");
-    console.log("first");
 
     try {
       await signUpUser({ email, password });

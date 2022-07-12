@@ -5,7 +5,7 @@ import {
   userStateContextProps,
 } from "../../context/UserStateContext";
 import { savePassword } from "../../firebase/firestore";
-import { generator } from "../../logic/pass-generator";
+import { generator } from "../../func/pass-generator";
 
 const Home = () => {
   const [passWoord, setPassWoord] = useState<{
@@ -69,6 +69,7 @@ const Home = () => {
             </label>
             <input
               onChange={(baseText) => setBase(baseText.target.value)}
+              value={base}
               type="text"
               id="base"
               placeholder="base pass"
@@ -84,6 +85,7 @@ const Home = () => {
             </label>
             <input
               onChange={(site) => setSite(site.target.value)}
+              value={site}
               type="text"
               id="site"
               placeholder="site"
@@ -93,6 +95,7 @@ const Home = () => {
           <div className="flex flex-col">
             <label htmlFor="special">Special</label>
             <input
+              value={special}
               onChange={(special) => setSpecial(special.target.value)}
               type="text"
               id="special"

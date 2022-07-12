@@ -17,6 +17,17 @@ interface userInput {
 const signUpUser = async ({ email, password }: userInput) => {
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
+    const userAppPath = doc(
+      db,
+      "users",
+      `${user.user.email}`,
+      "application",
+      "pass-generator"
+    );
+
+    await setDoc(userAppPath, {
+      userPassword: [],
+    });
 
     return user;
   } catch (error) {

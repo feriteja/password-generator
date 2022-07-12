@@ -1,5 +1,6 @@
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
+
 import { auth } from "../firebase.config";
 
 export interface userStateContextProps {
@@ -19,7 +20,7 @@ const UserProvider: React.FC<any> = ({ children }) => {
     return () => {
       unSubscribe();
     };
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
