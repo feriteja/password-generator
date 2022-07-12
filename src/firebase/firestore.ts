@@ -1,15 +1,9 @@
-import { getAuth, User } from "firebase/auth";
-import {
-  addDoc,
-  arrayUnion,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { UserState } from "../context/UserStateContext";
-import { auth, db } from "../firebase.config";
 import CryptoJs from "crypto-js";
+import { FirebaseError } from "firebase/app";
+import { User } from "firebase/auth";
+import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore";
+import { PasswordDataInt } from "../constant/type/structureData";
+import { db } from "../firebase.config";
 
 interface SavePasswordProps {
   password: string;
@@ -17,13 +11,34 @@ interface SavePasswordProps {
   user: User | null;
 }
 
+const getUserPassData = async (user: User) => {
+  try {
+    const userAppPath = doc(
+      db,
+      "users",
+      `${user.email}`,
+      "application",
+      "pass-generator"
+    );
+
+    const docSnap = await getDoc(userAppPath);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as PasswordDataInt;
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    if (error instanceof FirebaseError) {
+      throw error.code;
+    }
+    throw "somethingWrong";
+  }
+};
+
 const savePassword = async (props: SavePasswordProps) => {
   try {
     const userPath = doc(db, "users", `${props.user?.email}`);
-    const chiperPass = CryptoJs.AES.encrypt(
-      props.password,
-      import.meta.env.VITE_APP_CRYPTO_KEY
-    ).toString();
 
     await setDoc(userPath, {
       username: props.user?.email,
@@ -35,15 +50,16 @@ const savePassword = async (props: SavePasswordProps) => {
       "application",
       "pass-generator"
     );
-    const docPass = await getDoc(userAppPath);
 
     await setDoc(userAppPath, {
-      ...docPass.data(),
-      [props.site.toLowerCase()]: chiperPass,
+      userPassword: arrayUnion({ site: props.site, password: chiperPass }),
     });
   } catch (error) {
-    console.log(error);
+    if (error instanceof FirebaseError) {
+      throw error.code;
+    }
+    throw "somethingWrong";
   }
 };
 
-export { savePassword };
+export { savePassword, getUserPassData };
