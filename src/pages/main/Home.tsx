@@ -49,10 +49,10 @@ const Home = () => {
   };
 
   return (
-    <div className="flex justify-center items-center  h-screen w-full  bg-slate-700 ">
+    <div className="flex justify-center items-center  h-screen w-full bg-[#fafafa]  ">
       {showLoading && <ModalProgress />}
 
-      <div className="shadow-md  w-3/4 max-w-2xl px-5 py-3 rounded-md bg-slate-50">
+      <div className="shadow-md  w-3/4 max-w-2xl px-5 py-3 rounded-md bg-white">
         <h1 className="text-center text-lg font-semibold">
           Password Generator
         </h1>

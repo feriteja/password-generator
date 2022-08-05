@@ -18,7 +18,7 @@ const Profile = () => {
   } = useQuery(["user", user?.email], () => getUserPassData(user as User));
 
   return (
-    <div className="min-h-screen md:grid md:grid-cols-7  ">
+    <div className="min-h-screen md:grid md:grid-cols-7 bg-[#fafafa] ">
       <Toast message={messageToast} showToast={showToast} />
       <div className="flex  md:col-span-2  mt-2 border-b-2 sm:border-none p-2 ">
         <div className="flex items-center justify-center h-10 w-10 bg-red-400 rounded-full mr-2">
