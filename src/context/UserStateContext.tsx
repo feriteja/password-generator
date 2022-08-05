@@ -13,7 +13,7 @@ export interface userStateContextProps {
 const UserContext = createContext<Partial<userStateContextProps>>({});
 
 const UserProvider: React.FC<any> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>();
   const [showToast, setShowToast] = useState(false);
   const [messageToast, setMessageToast] = useState("");
 
@@ -45,7 +45,7 @@ const UserProvider: React.FC<any> = ({ children }) => {
 };
 
 export const UserState = () => {
-  return useContext(UserContext);
+  return useContext(UserContext) as userStateContextProps;
 };
 
 export default UserProvider;

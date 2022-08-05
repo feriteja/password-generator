@@ -1,7 +1,14 @@
 import CryptoJs from "crypto-js";
 import { FirebaseError } from "firebase/app";
 import { User } from "firebase/auth";
-import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { PasswordDataInt } from "../constant/type/structureData";
 import { db } from "../firebase.config";
 import { ChipperPass } from "../func/encryptPass";
@@ -12,12 +19,12 @@ interface SavePasswordProps {
   user: User | null;
 }
 
-const getUserPassData = async (user: User) => {
+const getUserPassData = async (user?: User) => {
   try {
     const userAppPath = doc(
       db,
       "users",
-      `${user.email}`,
+      `${user?.email}`,
       "application",
       "pass-generator"
     );
@@ -39,11 +46,6 @@ const getUserPassData = async (user: User) => {
 
 const savePassword = async (props: SavePasswordProps) => {
   try {
-    const userPath = doc(db, "users", `${props.user?.email}`);
-
-    await setDoc(userPath, {
-      username: props.user?.email,
-    });
     const userAppPath = doc(
       db,
       "users",
@@ -52,7 +54,7 @@ const savePassword = async (props: SavePasswordProps) => {
       "pass-generator"
     );
 
-    await setDoc(userAppPath, {
+    await updateDoc(userAppPath, {
       userPassword: arrayUnion({
         site: props.site,
         password: ChipperPass(props.password),
@@ -66,4 +68,28 @@ const savePassword = async (props: SavePasswordProps) => {
   }
 };
 
-export { savePassword, getUserPassData };
+const deletePassword = async (props: SavePasswordProps) => {
+  try {
+    const userAppPath = doc(
+      db,
+      "users",
+      `${props.user?.email}`,
+      "application",
+      "pass-generator"
+    );
+
+    await updateDoc(userAppPath, {
+      userPassword: arrayRemove({
+        site: props.site,
+        password: props.password,
+      }),
+    });
+  } catch (error) {
+    if (error instanceof FirebaseError) {
+      throw error.code;
+    }
+    throw "somethingWrong";
+  }
+};
+
+export { savePassword, getUserPassData, deletePassword };
